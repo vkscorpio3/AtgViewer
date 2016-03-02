@@ -167,7 +167,7 @@ public class AtgProjectsView extends ViewPart {
                 final ISelection selection = viewer.getSelection();
                 final Object obj = ((IStructuredSelection) selection).getFirstElement();
                 if (obj instanceof TreeComponent) {
-                    final File fileToOpen = ((TreeComponent) obj).getPropertiesFile().toFile();
+                    final File fileToOpen = ((TreeComponent) obj).getPropertiesFile().getConfigurationFilePath().toFile();
                     openFile(fileToOpen);
                 } else if (obj instanceof TreeProject) {
                     final File fileToOpen = ((TreeProject) obj).getProject().getMetaInf().getPath().toFile();
@@ -276,8 +276,7 @@ public class AtgProjectsView extends ViewPart {
         @Override
         public void propertyChange(final PropertyChangeEvent event) {
             final String property = event.getProperty();
-            if (WorkbenchPreferencePage.EXCLUDE_PATH_DIR.equals(property) || WorkbenchPreferencePage.PATH.equals(property)
-                    || WorkbenchPreferencePage.ENVIRONMENT_NAME.equals(property) || WorkbenchPreferencePage.BASE_MODULE.equals(property)) {
+            if (WorkbenchPreferencePage.EXCLUDE_PATH_DIR.equals(property) || WorkbenchPreferencePage.PATH.equals(property) || WorkbenchPreferencePage.ENVIRONMENT_NAME.equals(property) || WorkbenchPreferencePage.BASE_MODULE.equals(property)) {
                 ((ViewContentProvider) this.viewer.getContentProvider()).setToReload(true);
                 this.viewer.refresh();
             }

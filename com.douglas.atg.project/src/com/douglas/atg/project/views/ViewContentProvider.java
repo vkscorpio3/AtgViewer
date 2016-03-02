@@ -168,7 +168,7 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
             populateTreeWithComponents(to.getComponents(), entry.getValue().getConfigurationFiles(), entry.getValue().getInitConfigPath());
 
             // add current TreeProject to the main Tree Node
-            to.setParent(root);
+            //to.setParent(root);
             root.addChild(to);
         }
     }
@@ -215,7 +215,6 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
                     } else {
                         // otherwise we create a new one and add it to the map
                         currentPackage = new TreePackage(path.getFileName().toString(), path);
-                        currentPackage.setParent(parent);
                         parent.addChild(currentPackage);
                         packageMap.put(cumulatedTree.toString(), currentPackage);
                     }
@@ -224,8 +223,7 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
             }
 
             // create the properties file project to add to the tree
-            final TreeComponent prj = new TreeComponent(relativeTree.getFileName().toString(), relativeTree);
-            prj.setParent(parent);
+            final TreeComponent prj = new TreeComponent(relativeTree.getFileName().toString(), tree);
             // add the leaf to the branch
             parent.addChild(prj);
         }
@@ -294,12 +292,9 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
      * @param projectMap
      */
     private void compileComponents(final Map<String, TreeProject> projectMap) {
-        /*
         for (final TreeProject node : projectMap.values()) {
             compileProject(node, "");
         }
-        */
-        compileProject(projectMap.get("CUBEStore.cube-atg-etl"), "");
     }
 
     /**
@@ -322,27 +317,14 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
                             if (!childProject.isCompiled()) {
                                 compileProject(childProject, depth + "  ");
                             }
-                            // populateTreeWithComponents(project.getCompiled(), configurationFiles, childProject.getProject().getInitConfigPath());
                         }
                     }
                 }
 
+                // System.out.println("populateTreeWithComponents: " + depth + project.getName());
                 populateTreeWithComponents(project.getCompiled(), project.getAllDependenciesFiles(), project.getProject().getInitConfigPath());
                 project.setCompiled(true);
             }
         }
-    }
-
-    /**
-     * Clone a Tree object calling the {@link Tree#clone()} method on each child. Method are overloaded on every child.
-     * @param trees array of Tree node
-     * @return cloned array
-     */
-    private Tree[] cloneTree(final Tree[] trees) {
-        final Tree[] forest = new Tree[trees.length];
-        for (int i = 0; i < trees.length; i++) {
-            forest[i] = trees[i].clone();
-        }
-        return forest;
     }
 }

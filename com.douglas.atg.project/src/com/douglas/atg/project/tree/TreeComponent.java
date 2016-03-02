@@ -8,8 +8,9 @@ package com.douglas.atg.project.tree;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
+
+import com.douglas.atg.project.ConfigurationFile;
 
 /**
  * @author SIX Douglas (CGI) - z22dsix
@@ -17,18 +18,18 @@ import java.util.List;
  */
 public class TreeComponent extends Tree {
 
-    private final Path propertiesFile;
+    private final ConfigurationFile propertiesFile;
     private final String componentName;
 
-    public TreeComponent(final String name, final Path file) {
+    public TreeComponent(final String name, final ConfigurationFile file) {
         super(name, false);
         this.propertiesFile = file;
-        this.componentName = file.getFileName().toString().substring(0, file.getFileName().toString().lastIndexOf('.'));
+        this.componentName = file.getConfigurationFilePath().getFileName().toString().substring(0, file.getConfigurationFilePath().getFileName().toString().lastIndexOf('.'));
 
         List<String> lines;
         String className = null;
         try {
-            lines = Files.readAllLines(file, Charset.defaultCharset());
+            lines = Files.readAllLines(file.getConfigurationFilePath(), Charset.defaultCharset());
             for (final String line : lines) {
                 if (line.startsWith("$class=")) {
                     className = line.substring("$class=".length());
@@ -46,7 +47,7 @@ public class TreeComponent extends Tree {
         }
     }
 
-    public Path getPropertiesFile() {
+    public ConfigurationFile getPropertiesFile() {
         return propertiesFile;
     }
 
@@ -83,6 +84,11 @@ public class TreeComponent extends Tree {
     public String toString() {
         // Get the name and not the component name to have the file extension
         return getName();
+    }
+
+    public String toExtendedString() {
+        // Get the name and not the component name to have the file extension
+        return getName() + " " + this.propertiesFile.toString();
     }
 
     @Override

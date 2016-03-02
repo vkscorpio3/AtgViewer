@@ -6,7 +6,6 @@
 package com.douglas.atg.project.tree;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -54,7 +53,9 @@ public class Tree implements IAdaptable {
     }
 
     public void addChildren(final Tree[] children) {
-        this.children.addAll(Arrays.asList(children));
+        for (final Tree tree : children) {
+            addChild(tree);
+        }
     }
 
     public void removeChild(final Tree child) {

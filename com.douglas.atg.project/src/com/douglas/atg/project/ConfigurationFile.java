@@ -35,4 +35,12 @@ public class ConfigurationFile {
     public void setProjectRelativeConfigurationFilePath(final Path projectRelativeConfigurationFilePath) {
         this.projectRelativeConfigurationFilePath = projectRelativeConfigurationFilePath;
     }
+
+    /**
+     * @return
+     */
+    @Override
+    public String toString() {
+        return configurationFilePath.toString() + " - " + this.projectRelativeConfigurationFilePath.toString();
+    }
 }

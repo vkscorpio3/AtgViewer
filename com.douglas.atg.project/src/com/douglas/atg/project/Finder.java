@@ -38,7 +38,6 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.SimpleFileVisitor;
@@ -95,7 +94,7 @@ public class Finder extends SimpleFileVisitor<Path> {
     // method on each file.
     @Override
     public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs) {
-        if (!Files.isDirectory(file, LinkOption.NOFOLLOW_LINKS)) {
+        if (!Files.isDirectory(file)) {
             findFiles(file);
         }
         return CONTINUE;

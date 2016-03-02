@@ -6,7 +6,9 @@
 package com.douglas.atg.project.tree;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.douglas.atg.project.AtgProject;
 import com.douglas.atg.project.ConfigurationFile;
@@ -59,13 +61,22 @@ public class TreeProject extends Tree {
 
     public List<ConfigurationFile> getAllDependenciesFiles() {
         final List<ConfigurationFile> configurationFiles = new ArrayList<>();
-        for (int i = 0; i < this.dependencies.getChildren().length; i++) {
-            final TreeProject project = (TreeProject) this.dependencies.getChildren()[i];
-            configurationFiles.addAll(project.getAllDependenciesFiles());
+        final Set<TreeProject> projects = getAllProjectDependencies();
+        for (final TreeProject project : projects) {
             configurationFiles.addAll(project.getProject().getConfigurationFiles());
         }
         configurationFiles.addAll(this.getProject().getConfigurationFiles());
         return configurationFiles;
+    }
+
+    public Set<TreeProject> getAllProjectDependencies() {
+        final Set<TreeProject> projects = new HashSet<>();
+        for (int i = 0; i < this.dependencies.getChildren().length; i++) {
+            final TreeProject project = (TreeProject) this.dependencies.getChildren()[i];
+            projects.addAll(project.getAllProjectDependencies());
+            projects.add(project);
+        }
+        return projects;
     }
 
     public boolean isCompiled() {

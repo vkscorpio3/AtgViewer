@@ -7,10 +7,12 @@ package com.douglas.atg.project;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -74,7 +76,7 @@ public class ProjectAnalyser {
         // avoiding not suitable directories
         final Finder finder = new Finder(filePattern, dirExclusionPattern);
         try {
-            Files.walkFileTree(startingDir, finder);
+            Files.walkFileTree(startingDir, EnumSet.of(FileVisitOption.FOLLOW_LINKS), Integer.MAX_VALUE, finder);
         } catch (final IOException e) {
             e.printStackTrace();
         }
@@ -98,8 +100,7 @@ public class ProjectAnalyser {
         // default values from the properties file
         final Properties prop = new Properties();
         try {
-            final InputStream inStream =
-                    prop.getClass().getClassLoader().getResourceAsStream("com/douglas/atg/project/configuration.properties");
+            final InputStream inStream = prop.getClass().getClassLoader().getResourceAsStream("com/douglas/atg/project/configuration.properties");
             prop.load(inStream);
             inStream.close();
         } catch (final IOException e) {
@@ -115,8 +116,7 @@ public class ProjectAnalyser {
             baseModuleName = args[1];
             envName = args[2];
         }
-        prj.run(initialPath, baseModuleName, envName, new String[] {"**/bin", "**/src", "**/target", "**/.settings", "**/j2ee-apps", "**/app",
-                "**/environment", "**/views", "**/static-content", "**/node_modules", "**/public", "**/.jazz5", "**/.metadata", "**/assets",
-                "**/database", "**/tomcat-service-layer-server-mock" });
+        prj.run(initialPath, baseModuleName, envName, new String[] {"**/bin", "**/src", "**/target", "**/.settings", "**/j2ee-apps", "**/app", "**/environment", "**/views", "**/static-content", "**/node_modules", "**/public", "**/.jazz5",
+                "**/.metadata", "**/assets", "**/database", "**/tomcat-service-layer-server-mock" });
     }
 }
