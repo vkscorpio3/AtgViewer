@@ -48,6 +48,42 @@ public class TreePackage extends Tree {
     }
 
     /**
+     * @param newChild
+     * @return
+     */
+    @Override
+    public Tree addChild(final Tree newChild) {
+        //        System.out.println("Adding NewChild to a Tree Package (" + this.getName() + ") : " + newChild.getName());
+        if (newChild instanceof TreeComponent) {
+            TreeComponent childToRemove = null;
+            //            System.out.println("    NewChild is TreeComponent, let's see if the current Tree Package Component has some children");
+            for (final Tree child : getChildren()) {
+                //                System.out.println("    -  ExistingChild found: " + child.getName());
+                if (child instanceof TreeCompiledComponent && child.getName().equals(newChild.getName())) {
+                    //                    System.out.println("       ExistingChild is TreeCompiledComponent, let's add the new child to this one");
+                    return child.addChild(newChild);
+                } else if (child instanceof TreeComponent && child.getName().equals(newChild.getName())) {
+                    //                    System.out.println("       ExistingChild is TreeComponent, save it before replacing it by a TreeCompiledComponent");
+                    childToRemove = (TreeComponent) child;
+                }
+            }
+            //            System.out.println("    Check if a component has to be removed");
+            if (childToRemove != null) {
+                //                System.out.println("       Remove the component: " + childToRemove.getName());
+                removeChild(childToRemove);
+                //                System.out.println("       Create the compiled component");
+                final TreeCompiledComponent compiled = new TreeCompiledComponent(childToRemove);
+                //                System.out.println("       Add NewChild to the compiled component");
+                compiled.addChild(newChild);
+                //                System.out.println("       Add the compiled component to the TreePackage");
+                return super.addChild(compiled);
+            }
+        }
+        //        System.out.println("    Add NewChild to the current TreeComponent");
+        return super.addChild(newChild);
+    }
+
+    /**
      * @return the parent project if it is a TreeProject or the parent of the parent of the current project if...
      */
     public TreeProject getParentProject() {

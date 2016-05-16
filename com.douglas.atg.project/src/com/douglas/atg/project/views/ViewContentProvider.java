@@ -124,6 +124,10 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
         final String baseModule = preferenceStore.getString(WorkbenchPreferencePage.BASE_MODULE);
         final String[] excludePathDir = parseString(preferenceStore.getString(WorkbenchPreferencePage.EXCLUDE_PATH_DIR));
 
+        if (initialPath == null || envName == null || excludePathDir == null) {
+            System.out.println("plugin not initialized");
+            return;
+        }
         prj.run(initialPath, baseModule, envName, excludePathDir);
         final long afterRunTime = new Date().getTime();
 

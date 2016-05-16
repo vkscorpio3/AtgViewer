@@ -5,6 +5,9 @@
  */
 package com.douglas.atg.project.views;
 
+import org.eclipse.jdt.internal.ui.JavaPlugin;
+import org.eclipse.jdt.internal.ui.JavaPluginImages;
+import org.eclipse.jdt.internal.ui.viewsupport.ImageDescriptorRegistry;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.ISharedImages;
@@ -12,6 +15,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.douglas.atg.project.tree.Tree;
 import com.douglas.atg.project.tree.TreeClass;
+import com.douglas.atg.project.tree.TreeCompiledComponent;
 import com.douglas.atg.project.tree.TreeComponent;
 import com.douglas.atg.project.tree.TreePackage;
 import com.douglas.atg.project.tree.TreeProject;
@@ -22,7 +26,14 @@ import com.douglas.atg.project.tree.TreeSubProject.SubProjectType;
  * @author SIX Douglas (CGI) - z22dsix
  *
  */
+@SuppressWarnings("restriction")
 public class ViewLabelProvider extends LabelProvider {
+
+    private final ImageDescriptorRegistry fRegistry;
+
+    public ViewLabelProvider() {
+        fRegistry = JavaPlugin.getImageDescriptorRegistry();
+    }
 
     @Override
     public String getText(final Object obj) {
@@ -34,6 +45,8 @@ public class ViewLabelProvider extends LabelProvider {
         Image image = null;
         if (obj instanceof TreeProject) {
             image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FOLDER);
+        } else if (obj instanceof TreeCompiledComponent) {
+            image = fRegistry.get(JavaPluginImages.DESC_OBJS_SOURCE_ATTACH_ATTRIB);
         } else if (obj instanceof TreeComponent) {
             image = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
         } else if (obj instanceof TreeSubProject) {

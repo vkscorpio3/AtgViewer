@@ -47,8 +47,10 @@ public class Tree implements IAdaptable {
     }
 
     public Tree addChild(final Tree child) {
-        children.add(child);
-        child.setParent(this);
+        if (child != null) {
+            children.add(child);
+            child.setParent(this);
+        }
         return child;
     }
 
@@ -59,8 +61,10 @@ public class Tree implements IAdaptable {
     }
 
     public void removeChild(final Tree child) {
-        children.remove(child);
-        child.setParent(null);
+        if (child != null) {
+            children.remove(child);
+            child.setParent(null);
+        }
     }
 
     public void clearChildren() {
