@@ -128,6 +128,7 @@ public class ViewContentProvider implements IStructuredContentProvider, ITreeCon
             System.out.println("plugin not initialized");
             return;
         }
+        System.out.println(initialPath + ", " + baseModule + ", " + envName + ", " + excludePathDir);
         prj.run(initialPath, baseModule, envName, excludePathDir);
         final long afterRunTime = new Date().getTime();
 

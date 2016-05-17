@@ -177,7 +177,7 @@ public class AtgProjectsView extends ViewPart {
             public void run() {
                 ((ViewContentProvider) viewer.getContentProvider()).setToReload(true);
                 viewer.refresh();
-                showMessage("Refresh executed");
+                //showMessage("Refresh executed");
             }
         };
         refreshAction.setText("Refresh");
@@ -222,7 +222,10 @@ public class AtgProjectsView extends ViewPart {
     private void openCompiled(final TreeCompiledComponent compiled) {
         final Properties props = new Properties();
         final StringBuffer sb = new StringBuffer();
-        for (final Tree child : compiled.getChildren()) {
+
+        final Tree[] children = compiled.getChildren();
+        for (int i = children.length - 1; i >= 0; i--) {
+            final Tree child = children[i];
             final TreeComponent comp = (TreeComponent) child;
             try {
                 props.load(Files.newInputStream(comp.getPropertiesFile().getConfigurationFilePath()));

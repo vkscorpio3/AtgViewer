@@ -9,6 +9,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
 
 import com.douglas.atg.project.tree.Tree;
+import com.douglas.atg.project.tree.TreeCompiledComponent;
 import com.douglas.atg.project.tree.TreeComponent;
 import com.douglas.atg.project.tree.TreePackage;
 
@@ -38,6 +39,10 @@ public class NameSorter extends ViewerSorter {
                 } else if (t1.getName() == null && t2.getName() != null) {
                     returnValue = 1;
                 } else if (t1.getName() != null && t2.getName() == null) {
+                    returnValue = -1;
+                } else if (t2 instanceof TreePackage && t1 instanceof TreeCompiledComponent) {
+                    returnValue = 1;
+                } else if (t1 instanceof TreePackage && t2 instanceof TreeCompiledComponent) {
                     returnValue = -1;
                 } else if (t2 instanceof TreePackage && t1 instanceof TreeComponent) {
                     returnValue = 1;
